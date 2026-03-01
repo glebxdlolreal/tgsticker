@@ -308,11 +308,11 @@ var StickersReorder = {
 var Main = {
   init(api_hash = null) {
     if (api_hash) {
-      Aj.apiUrl = '/stickers/api?hash=' + api_hash;
+      Aj.apiUrl = '/oauth/api?hash=' + api_hash;
     }
     Main.initOnce();
     Aj.viewTransition = true;
-    window.basePath = '/stickers'
+    window.basePath = '/oauth'
 
     setBackButton(Aj.state.backButton);
     Aj.state.files = Aj.state.files || {};
@@ -1560,8 +1560,10 @@ var MainPage = {
 
     var accept = (allow_phone = false) => Aj.apiRequest('confirm', {tsession: Aj.state.temp_session, accept_allow_phone: allow_phone, accept_allow_write: Aj.state.allowMsg}, res => {
       if (res) {
-        WebApp.HapticFeedback.notificationOccurred('success');
-        WebApp.close();
+        if (res.ok) {
+          WebApp.HapticFeedback.notificationOccurred('success');
+          WebApp.close();
+        }
       }
     });
 
